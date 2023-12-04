@@ -8,29 +8,29 @@ function App() {
 	]);
 	const [selectedPlanet, setSelectedPlanet] = useState('');
 	const { inputs, handleChange, clearForm, resetForm } = useForm({
-		name: '',
-		email: '',
+		selectedPlanet: '',
 	});
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		console.log(e);
 		// clearForm();
-		// const httpReq = {
-		// 	method: 'POST',
-		// 	headers: {
-		// 		Accept: 'application/json',
-		// 		'Content-Type': 'application/json; charset=UTF-8',
-		// 		'Access-Control-Allow-Origin': '*',
-		// 	},
-		// 	body: JSON.stringify(inputs),
-		// };
+		const httpReq = {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json; charset=UTF-8',
+				'Access-Control-Allow-Origin': '*',
+			},
+			body: JSON.stringify(inputs),
+		};
 
-		// await fetch('http://127.0.0.1:9030/list', httpReq)
-		// 	.then((response) => response.json())
-		// 	.then((data) => {
-		// 		setPlanetData(data);
-		// 	});
+		await fetch('http://127.0.0.1:9030/api/getDistance', httpReq)
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data);
+				// setPlanetData(data);
+			});
 	};
 
 	useEffect(() => {
@@ -59,14 +59,25 @@ function App() {
 		<>
 			<h1>Where do you want to go?</h1>
 			<form onSubmit={handleSubmit}>
-				<select name="planet" id="planetList">
-					<option name="planet" value="" />
-					{planetData.map((planet) => (
-						<option key={planet.Planet} name="planet" value={planet.Planet}>
-							{planet.Planet}
-						</option>
-					))}
-				</select>
+				<div className="field">
+					<div>
+						<label htmlFor="selectedPlanet">Choose a planet</label>
+					</div>
+					<select
+						name="selectedPlanet"
+						id="selectedPlanet"
+						onChange={handleChange}
+					>
+						{/* <option name="" value="">
+							Choose a planet
+						</option> */}
+						{planetData.map((planet) => (
+							<option key={planet.Planet} name="planet" value={planet.Planet}>
+								{planet.Planet}
+							</option>
+						))}
+					</select>
+				</div>
 				<button type="submit">Let's go</button>
 			</form>
 			{/*

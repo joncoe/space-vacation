@@ -17,7 +17,7 @@ db = MongoEngine()
 db.init_app(app)
 
 
-class Planets(db.Document):
+class PlanetList(db.Document):
     Planet = db.StringField()
     # SunDistanceAU = db.DecimalField()
     meta = {
@@ -31,9 +31,26 @@ class Planets(db.Document):
 @cross_origin(origin="*")
 def list_planets():
     print(db)
-    print("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀")
-    data = list(Planets.objects)
+    log("connected", "🚀")
+    data = list(PlanetList.objects)
     return jsonify(data)
+
+
+@app.route("/api/getDistance", methods=["POST"])
+@cross_origin(origin="*")
+def calculate_distance():
+    if request.method == "POST":
+        data = request.get_json()
+        selectedPlanet = data["selectedPlanet"]
+
+        log(selectedPlanet, "🪐")
+        return jsonify(data)
+
+
+def log(msg, emoji):
+    print(emoji * 10)
+    print(msg)
+    print(emoji * 10)
 
 
 if (__name__) == "__main__":
