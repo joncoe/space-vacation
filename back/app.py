@@ -6,7 +6,8 @@ from flask_mongoengine import MongoEngine
 
 app = Flask(__name__)
 
-auKm = 149597870.7
+nasaAPI = "0UwQK04XRXD7U435LgFrOCH5gl826pclax1I87Gy"
+auKm = 149597870
 
 app.config["MONGODB_SETTINGS"] = {
     "db": "SpaceVacation",
@@ -19,7 +20,7 @@ db.init_app(app)
 
 class PlanetList(db.Document):
     Planet = db.StringField()
-    # SunDistanceAU = db.DecimalField()
+    SunDistanceAU = db.FloatField()
     meta = {
         "collection": "PlanetDestinations",
         "allow_inheritance": False,
@@ -42,9 +43,18 @@ def calculate_distance():
     if request.method == "POST":
         data = request.get_json()
         selectedPlanet = data["selectedPlanet"]
-
         log(selectedPlanet, "🪐")
-        return jsonify(data)
+        planet = PlanetList.objects(Planet=selectedPlanet).first()
+        au = planet.SunDistanceAU
+        distanceFromEarth = abs(1 - au) * auKm
+        drivingTime = round((distanceFromEarth / 120) / 24 / 365, 2)
+
+        returnData = {
+            "distanceFromEarth": distanceFromEarth,
+            "drivingTime": drivingTime,
+        }
+
+        return jsonify(returnData)
 
 
 def log(msg, emoji):

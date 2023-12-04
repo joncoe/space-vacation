@@ -28,7 +28,7 @@ function App() {
 		await fetch('http://127.0.0.1:9030/api/getDistance', httpReq)
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data);
+				console.log('returned data are', data);
 				// setPlanetData(data);
 			});
 	};
