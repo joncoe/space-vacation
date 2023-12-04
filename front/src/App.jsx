@@ -3,31 +3,35 @@ import useForm from './lib/useForm';
 import './App.scss';
 
 function App() {
-	const [planetData, setPlanetData] = useState({});
+	const [planetData, setPlanetData] = useState([
+		{ planet: 'none', distance: 0 },
+	]);
+	const [selectedPlanet, setSelectedPlanet] = useState('');
 	const { inputs, handleChange, clearForm, resetForm } = useForm({
 		name: '',
 		email: '',
 	});
 
-	// const handleSubmit = async (e) => {
-	// 	e.preventDefault();
-	// 	clearForm();
-	// 	const httpReq = {
-	// 		method: 'POST',
-	// 		headers: {
-	// 			Accept: 'application/json',
-	// 			'Content-Type': 'application/json; charset=UTF-8',
-	// 			'Access-Control-Allow-Origin': '*',
-	// 		},
-	// 		body: JSON.stringify(inputs),
-	// 	};
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		console.log(e);
+		// clearForm();
+		// const httpReq = {
+		// 	method: 'POST',
+		// 	headers: {
+		// 		Accept: 'application/json',
+		// 		'Content-Type': 'application/json; charset=UTF-8',
+		// 		'Access-Control-Allow-Origin': '*',
+		// 	},
+		// 	body: JSON.stringify(inputs),
+		// };
 
-	// 	await fetch('http://127.0.0.1:9030/list', httpReq)
-	// 		.then((response) => response.json())
-	// 		.then((data) => {
-	// 			setPlanetData(data);
-	// 		});
-	// };
+		// await fetch('http://127.0.0.1:9030/list', httpReq)
+		// 	.then((response) => response.json())
+		// 	.then((data) => {
+		// 		setPlanetData(data);
+		// 	});
+	};
 
 	useEffect(() => {
 		const httpReq = {
@@ -37,11 +41,10 @@ function App() {
 				'Content-Type': 'application/json; charset=UTF-8',
 				'Access-Control-Allow-Origin': '*',
 			},
-			// body: JSON.stringify(inputs),
 		};
 
 		const fetchData = async () => {
-			await fetch('http://127.0.0.1:9030/list', httpReq)
+			await fetch('http://127.0.0.1:9030/api/list', httpReq)
 				.then((response) => response.json())
 				.then((data) => {
 					console.log('response from list', data);
@@ -54,13 +57,18 @@ function App() {
 
 	return (
 		<>
-			<ul>
-				{planetData.map((planet) => (
-					<li key={planet._id}>
-						{planet.Planet}, {planet.SunDistanceAU}
-					</li>
-				))}
-			</ul>
+			<h1>Where do you want to go?</h1>
+			<form onSubmit={handleSubmit}>
+				<select name="planet" id="planetList">
+					<option name="planet" value="" />
+					{planetData.map((planet) => (
+						<option key={planet.Planet} name="planet" value={planet.Planet}>
+							{planet.Planet}
+						</option>
+					))}
+				</select>
+				<button type="submit">Let's go</button>
+			</form>
 			{/*
 			<h1 className="mb-5">Round trip server test 🛰</h1>
 			<div className="flex justify-around">

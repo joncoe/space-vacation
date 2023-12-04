@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, request
 
-# from flask_cors import CORS, cross_origin
+from flask_cors import CORS, cross_origin
 
 from flask_mongoengine import MongoEngine
 
 app = Flask(__name__)
+
+auKm = 149597870.7
 
 app.config["MONGODB_SETTINGS"] = {
     "db": "SpaceVacation",
@@ -17,12 +19,16 @@ db.init_app(app)
 
 class Planets(db.Document):
     Planet = db.StringField()
-    SunDistanceAU = db.IntField()
-    meta = {"collection": "PlanetDestinations", "allow_inheritance": False}
+    # SunDistanceAU = db.DecimalField()
+    meta = {
+        "collection": "PlanetDestinations",
+        "allow_inheritance": False,
+        "strict": False,
+    }
 
 
-@app.route("/list", methods=["GET"])
-# @cross_origin(supports_credentials=True)
+@app.route("/api/list", methods=["GET"])
+@cross_origin(origin="*")
 def list_planets():
     print(db)
     print("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀")
