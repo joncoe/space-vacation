@@ -44,7 +44,8 @@ function App() {
 		};
 
 		const fetchData = async () => {
-			await fetch('http://127.0.0.1:9030/api/list', httpReq)
+			// await fetch('http://127.0.0.1:9030/api/list', httpReq)
+			await fetch('http://127.0.0.1:9030/api/getInfo', httpReq)
 				.then((response) => response.json())
 				.then((data) => {
 					console.log('response from list', data);
