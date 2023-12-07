@@ -3,17 +3,18 @@ import useForm from './lib/useForm';
 import './App.scss';
 
 function App() {
-	const [planetData, setPlanetData] = useState([
+	const [planetList, setPanetList] = useState([
 		{ planet: 'none', distance: 0 },
 	]);
-	const [selectedPlanet, setSelectedPlanet] = useState('');
+	const [selectedPlanet, setSelectedPlanet] = useState('not yet');
+	const [planetData, setPlanetData] = useState('');
 	const { inputs, handleChange, clearForm, resetForm } = useForm({
 		selectedPlanet: '',
 	});
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(e);
+		setSelectedPlanet(e.value);
 		// clearForm();
 		const httpReq = {
 			method: 'POST',
@@ -29,7 +30,7 @@ function App() {
 			.then((response) => response.json())
 			.then((data) => {
 				console.log('returned data are', data);
-				// setPlanetData(data);
+				setPlanetData(data);
 			});
 	};
 
@@ -44,12 +45,12 @@ function App() {
 		};
 
 		const fetchData = async () => {
-			// await fetch('http://127.0.0.1:9030/api/list', httpReq)
-			await fetch('http://127.0.0.1:9030/api/getInfo', httpReq)
+			await fetch('http://127.0.0.1:9030/api/list', httpReq)
+				// await fetch('http://127.0.0.1:9030/api/getNasaData', httpReq)
 				.then((response) => response.json())
 				.then((data) => {
 					console.log('response from list', data);
-					setPlanetData(data);
+					setPanetList(data);
 				});
 		};
 
@@ -59,42 +60,72 @@ function App() {
 	return (
 		<>
 			<h1 className="mb-5">Space Vacation</h1>
-			<form onSubmit={handleSubmit}>
-				<div className="field">
-					<div>
-						<label htmlFor="selectedPlanet">Choose a planet</label>
-					</div>
+			<div className="flex justify-around max-w-5xl m-auto">
+				<div className="form w-1/2">
+					<form onSubmit={handleSubmit}>
+						<div className="field">
+							<div>
+								<label htmlFor="selectedPlanet">Choose a planet</label>
+							</div>
 
-					<label className="form-control w-full max-w-xs">
-						<div className="label">
-							<span className="label-text">Where do you want to go?</span>
-							<span className="label-text-alt">Alt label</span>
+							<label className="form-control w-full max-w-xs">
+								<div className="label">
+									<span className="label-text">Where do you want to go?</span>
+									<span className="label-text-alt">Alt label</span>
+								</div>
+								<select
+									className="select select-bordered"
+									name="selectedPlanet"
+									id="selectedPlanet"
+									onChange={handleChange}
+									defaultValue={'none'}
+								>
+									<option disabled value="none">
+										Choose a planet
+									</option>
+									{planetList.map((planet, i) => (
+										<option
+											key={planet.Planet + i}
+											name="planet"
+											value={planet.Planet}
+										>
+											{planet.Planet}
+										</option>
+									))}
+								</select>
+								<div className="label">
+									<span className="label-text-alt">Alt label</span>
+									<span className="label-text-alt">Alt label</span>
+								</div>
+							</label>
 						</div>
-						<select
-							className="select select-bordered"
-							name="selectedPlanet"
-							id="selectedPlanet"
-							onChange={handleChange}
-						>
-							<option disabled selected>
-								Choose a planet
-							</option>
-							{planetData.map((planet) => (
-								<option key={planet.Planet} name="planet" value={planet.Planet}>
-									{planet.Planet}
-								</option>
-							))}
-						</select>
-						<div className="label">
-							<span className="label-text-alt">Alt label</span>
-							<span className="label-text-alt">Alt label</span>
-						</div>
-					</label>
+						<button type="submit" className="btn btn-primary">
+							Let's go
+						</button>
+					</form>
 				</div>
-				<button type="submit" className="btn btn-primary">
-					Let's go
-				</button>
-			</form>
+				<div className="form w-1/2">
+					<p>Amazing! You will travel to {selectedPlanet}!</p>
+
+					<p>
+						It&apos;s distance from the sun is {planetData.au}&nbsp;
+						<a
+							href="https://en.wikipedia.org/wiki/Astronomical_unit#:~:text=The%20astronomical%20unit%20(symbol%3A%20au,)%20or%208.3%20light%2Dminutes"
+							target="_blank"
+							rel="noreferrer"
+						>
+							astronomical units.
+						</a>
+						!
+					</p>
+					<p>
+						By car, the travel time would be about {planetData.drivingTime}{' '}
+						years
+					</p>
+					{/* <p>Voyager probe speed would take you {planetData.voyagerTime}</p> */}
+				</div>
+			</div>
+
 			{/*
 			<h1 className="mb-5">Round trip server test 🛰</h1>
 			<div className="flex justify-around">
@@ -140,11 +171,11 @@ function App() {
 					<ul>
 						<li>
 							<span className="font-medium ">name:</span> <br />
-							<span className="font-mono">{planetData.name}</span>
+							<span className="font-mono">{planetList.name}</span>
 						</li>
 						<li>
 							<span className="font-medium ">email:</span> <br />
-							<span className="font-mono">{planetData.email}</span>
+							<span className="font-mono">{planetList.email}</span>
 						</li>
 					</ul>
 				</div>

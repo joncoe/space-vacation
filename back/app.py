@@ -10,8 +10,9 @@ app = Flask(__name__)
 
 NASA_API_URL = "https://api.nasa.gov/planetary/apod"
 NASA_API_KEY = "0UwQK04XRXD7U435LgFrOCH5gl826pclax1I87Gy"
-# NASA_key = "https://api.nasa.gov/planetary/apod?api_key=IrY00RmqYh7DCJf8EhSWfNtfFDqmuFiR9TEcn4nJ&count=1"
+VOYAGER_SPEED = 61500
 AU_IN_KM = 149597870
+DRIVE_SPEED = 120
 
 app.config["MONGODB_SETTINGS"] = {
     "db": "SpaceVacation",
@@ -38,8 +39,8 @@ class PlanetList(db.Document):
     }
 
 
-# @app.route("/api/list", methods=["GET"])
-# @cross_origin(origin="*")
+@app.route("/api/list", methods=["GET"])
+@cross_origin(origin="*")
 def list_planets():
     # print(db)
     log("connected", "🚀")
@@ -49,14 +50,14 @@ def list_planets():
 
 
 @app.route("/api/getNasaData", methods=["GET"])
+@cross_origin(origin="*")
 async def get_nasa_data():
     try:
         planets = list_planets()
         async with ClientSession() as session:
-            # Fetch data asynchronously
             apod = await fetch_nasa_data(session)
             data = {"planets": planets, "apod": apod}
-            return jsonify(data)  # Sending JSON response back to the user
+            return jsonify(planets)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -88,11 +89,14 @@ def calculate_distance():
         planet = PlanetList.objects(Planet=selectedPlanet).first()
         au = planet.SunDistanceAU
         distanceFromEarth = abs(1 - au) * AU_IN_KM
-        drivingTime = round((distanceFromEarth / 120) / 24 / 365, 2)
+        drivingTime = round((distanceFromEarth / DRIVE_SPEED) / 24 / 365, 2)
+        voyagerTime = round((distanceFromEarth / VOYAGER_SPEED) / 24 / 365, 2)
 
         returnData = {
             "distanceFromEarth": distanceFromEarth,
             "drivingTime": drivingTime,
+            "voyagerSpeed": voyagerTime,
+            "au": au,
         }
 
         return jsonify(returnData)
