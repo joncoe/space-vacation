@@ -67,7 +67,7 @@ function App() {
 								<label htmlFor="selectedPlanet">Choose a planet</label>
 							</div>
 
-							<label className="form-control w-full max-w-xs">
+							<label className="form-control w-full max-w-xs mb-5">
 								<div className="label">
 									<span className="label-text">
 										Where do you want to boldly go?

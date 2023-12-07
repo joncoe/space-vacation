@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+import json
 import requests
 import asyncio
 from aiohttp import ClientSession
@@ -25,8 +26,10 @@ db.init_app(app)
 
 
 async def fetch_nasa_data(session):
-    url = f"{NASA_API_URL}?api_key={NASA_API_KEY}"
+    url = f"{NASA_API_URL}?api_key={NASA_API_KEY}&count=1"
+    print("🔭 nasa url" + url)
     async with session.get(url) as response:
+        # return await response.json()
         return await response.json()
 
 
@@ -47,14 +50,13 @@ def list_planets():
 
 
 @app.route("/api/getNasaData", methods=["GET"])
-@cross_origin(origin="*")
-async def get_nasa_data():
+async def get_npod():
     try:
         planets = list_planets()
         async with ClientSession() as session:
             apod = await fetch_nasa_data(session)
-            data = {"planets": planets, "apod": apod}
-            return jsonify(planets)
+            data = {"apod": apod, "planets": PlanetList.objects}
+            return jsonify(data)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
