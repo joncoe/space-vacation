@@ -13,6 +13,7 @@ NASA_API_KEY = "0UwQK04XRXD7U435LgFrOCH5gl826pclax1I87Gy"
 VOYAGER_SPEED = 61500
 AU_IN_KM = 149597870
 DRIVE_SPEED = 120
+WALKING_SPEED = 5
 
 app.config["MONGODB_SETTINGS"] = {
     "db": "SpaceVacation",
@@ -42,11 +43,7 @@ class PlanetList(db.Document):
 @app.route("/api/list", methods=["GET"])
 @cross_origin(origin="*")
 def list_planets():
-    # print(db)
-    log("connected", "🚀")
     return list(PlanetList.objects)
-    # planets = {"planets": data}
-    # return jsonify(planets)
 
 
 @app.route("/api/getNasaData", methods=["GET"])
@@ -63,22 +60,6 @@ async def get_nasa_data():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("/api/getInfo", methods=["GET"])
-@cross_origin(origin="*")
-async def init_site_info():
-    # apod = get_nasa_data()
-
-    pass
-    # # log("getInfo", "🚀")
-    # # data = {"planets": list(PlanetList.objects)}
-
-    # log("connected", "🚀")
-    # # data = list(PlanetList.objects)
-    # # print(data)
-    # dump(data)
-    # return jsonify(data)
-
-
 @app.route("/api/getDistance", methods=["POST"])
 @cross_origin(origin="*")
 def calculate_distance():
@@ -91,11 +72,13 @@ def calculate_distance():
         distanceFromEarth = abs(1 - au) * AU_IN_KM
         drivingTime = round((distanceFromEarth / DRIVE_SPEED) / 24 / 365, 2)
         voyagerTime = round((distanceFromEarth / VOYAGER_SPEED) / 24 / 365, 2)
+        walkingTime = round((distanceFromEarth / WALKING_SPEED) / 24 / 365, 2)
 
         returnData = {
             "distanceFromEarth": distanceFromEarth,
             "drivingTime": drivingTime,
-            "voyagerSpeed": voyagerTime,
+            "voyagerTime": voyagerTime,
+            "walkingTime": walkingTime,
             "au": au,
         }
 

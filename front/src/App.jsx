@@ -14,8 +14,8 @@ function App() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setSelectedPlanet(e.value);
-		// clearForm();
+		setSelectedPlanet(inputs.selectedPlanet);
+		resetForm();
 		const httpReq = {
 			method: 'POST',
 			headers: {
@@ -104,25 +104,36 @@ function App() {
 						</button>
 					</form>
 				</div>
-				<div className="form w-1/2">
+				<div className="form w-1/2 font-mono text-sm">
 					<p>Amazing! You will travel to {selectedPlanet}!</p>
 
 					<p>
-						It&apos;s distance from the sun is {planetData.au}&nbsp;
+						It's distance from the sun is{' '}
+						<span className="font-semibold">{planetData.au}</span>&nbsp;
 						<a
 							href="https://en.wikipedia.org/wiki/Astronomical_unit#:~:text=The%20astronomical%20unit%20(symbol%3A%20au,)%20or%208.3%20light%2Dminutes"
 							target="_blank"
 							rel="noreferrer"
 						>
-							astronomical units.
+							astronomical units
 						</a>
 						!
 					</p>
 					<p>
-						By car, the travel time would be about {planetData.drivingTime}{' '}
+						Traveling by rocket at the speed of the Voyager probes will take you{' '}
+						<span className="font-semibold">{planetData.voyagerTime}</span>{' '}
+						years.
+					</p>
+					<p>
+						By car, the travel time would be about{' '}
+						<span className="font-semibold">{planetData.drivingTime}</span>{' '}
 						years
 					</p>
-					{/* <p>Voyager probe speed would take you {planetData.voyagerTime}</p> */}
+					<p>
+						And it will take you about{' '}
+						<span className="font-semibold">{planetData.walkingTime}</span>{' '}
+						years to walk.
+					</p>
 				</div>
 			</div>
 
