@@ -50,6 +50,7 @@ def list_planets():
 
 
 @app.route("/api/getNasaData", methods=["GET"])
+# @cross_origin(origin="*")
 async def get_npod():
     try:
         planets = list_planets()

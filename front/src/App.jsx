@@ -7,7 +7,8 @@ function App() {
 		{ planet: 'none', distance: 0 },
 	]);
 	const [selectedPlanet, setSelectedPlanet] = useState(null);
-	const [planetData, setPlanetData] = useState('');
+	const [planetData, setPlanetData] = useState({});
+	const [astronomyImage, setAstronomyImage] = useState({});
 	const { inputs, handleChange, clearForm, resetForm } = useForm({
 		selectedPlanet: '',
 	});
@@ -26,7 +27,7 @@ function App() {
 			body: JSON.stringify(inputs),
 		};
 
-		await fetch('http://127.0.0.1:9030/api/getDistance', httpReq)
+		await fetch('/api/getDistance', httpReq)
 			.then((response) => response.json())
 			.then((data) => {
 				console.log('returned data are', data);
@@ -45,11 +46,12 @@ function App() {
 		};
 
 		const fetchData = async () => {
-			await fetch('http://127.0.0.1:9030/api/list', httpReq)
+			await fetch('/api/getNasaData', httpReq)
 				// await fetch('http://127.0.0.1:9030/api/getNasaData', httpReq)
 				.then((response) => response.json())
 				.then((data) => {
-					setPanetList(data);
+					setPanetList(data.planets);
+					setAstronomyImage(data.apod);
 				});
 		};
 
