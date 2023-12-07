@@ -44,13 +44,11 @@ class PlanetList(db.Document):
 
 
 @app.route("/api/list", methods=["GET"])
-@cross_origin(origin="*")
 def list_planets():
     return list(PlanetList.objects)
 
 
 @app.route("/api/getNasaData", methods=["GET"])
-# @cross_origin(origin="*")
 async def get_npod():
     try:
         planets = list_planets()
@@ -64,7 +62,6 @@ async def get_npod():
 
 
 @app.route("/api/getDistance", methods=["POST"])
-@cross_origin(origin="*")
 def calculate_distance():
     if request.method == "POST":
         data = request.get_json()
