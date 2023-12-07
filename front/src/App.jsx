@@ -57,28 +57,42 @@ function App() {
 
 	return (
 		<>
-			<h1>Where do you want to go?</h1>
+			<h1 className="mb-5">Space Vacation</h1>
 			<form onSubmit={handleSubmit}>
 				<div className="field">
 					<div>
 						<label htmlFor="selectedPlanet">Choose a planet</label>
 					</div>
-					<select
-						name="selectedPlanet"
-						id="selectedPlanet"
-						onChange={handleChange}
-					>
-						{/* <option name="" value="">
-							Choose a planet
-						</option> */}
-						{planetData.map((planet) => (
-							<option key={planet.Planet} name="planet" value={planet.Planet}>
-								{planet.Planet}
+
+					<label className="form-control w-full max-w-xs">
+						<div className="label">
+							<span className="label-text">Where do you want to go?</span>
+							<span className="label-text-alt">Alt label</span>
+						</div>
+						<select
+							className="select select-bordered"
+							name="selectedPlanet"
+							id="selectedPlanet"
+							onChange={handleChange}
+						>
+							<option disabled selected>
+								Choose a planet
 							</option>
-						))}
-					</select>
+							{planetData.map((planet) => (
+								<option key={planet.Planet} name="planet" value={planet.Planet}>
+									{planet.Planet}
+								</option>
+							))}
+						</select>
+						<div className="label">
+							<span className="label-text-alt">Alt label</span>
+							<span className="label-text-alt">Alt label</span>
+						</div>
+					</label>
 				</div>
-				<button type="submit">Let's go</button>
+				<button type="submit" className="btn btn-primary">
+					Let's go
+				</button>
 			</form>
 			{/*
 			<h1 className="mb-5">Round trip server test 🛰</h1>
