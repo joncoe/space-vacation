@@ -15,6 +15,7 @@ VOYAGER_SPEED = 61500
 AU_IN_KM = 149597870
 DRIVE_SPEED = 120
 WALKING_SPEED = 5
+LIGHT_SPEED = 1080000000  # km/h
 
 app.config["MONGODB_SETTINGS"] = {
     "db": "SpaceVacation",
@@ -66,7 +67,7 @@ def list_planets():
 @app.route("/api/getNasaData", methods=["GET"])
 async def get_npod():
     try:
-        planets = list(PlanetList.objects)
+        planets = sorted(list(PlanetList.objects), key=lambda x: x.SunDistanceAU)
         async with ClientSession() as session:
             apod = await fetch_nasa_data(session)
             data = {"apod": apod, "planets": PlanetList.objects}
@@ -138,7 +139,8 @@ def processDistances(au, selectedPlanet):
     drivingTime = round((distanceFromEarthKM / DRIVE_SPEED) / 24 / 365, 2)
     voyagerTime = round((distanceFromEarthKM / VOYAGER_SPEED) / 24 / 365, 2)
     walkingTime = round((distanceFromEarthKM / WALKING_SPEED) / 24 / 365, 2)
-
+    lightSpeedTime = round((distanceFromEarthKM / LIGHT_SPEED), 2)  # hours
+    log(lightSpeedTime, "⚡")
     returnData = {
         "selectedPlanet": selectedPlanet,
         "distanceFromEarthAU": distanceFromEarthAU,
@@ -146,6 +148,7 @@ def processDistances(au, selectedPlanet):
         "drivingTime": drivingTime,
         "voyagerTime": voyagerTime,
         "walkingTime": walkingTime,
+        "lightSpeedTime": lightSpeedTime,
         "au": au,
     }
     return returnData

@@ -20,6 +20,21 @@ function App() {
 				<Route path="/admin" element={<Admin />} />
 				<Route path="*" element={<LostInSpace />} />
 			</Routes>
+			<p className="copyright">
+				Photos from{' '}
+				<a href="http://nasa.gov" target="_blank" rel="noreferrer">
+					NASA
+				</a>
+				,{' '}
+				<a
+					href="https://asdc.larc.nasa.gov/copyright-information#:~:text=Unless%20otherwise%20noted%2C%20all%20images,exhibits%2C%20and%20Internet%20web%20pages."
+					target="_blank"
+					rel="noreferrer"
+				>
+					available for general use
+				</a>
+				.
+			</p>
 		</>
 	);
 }

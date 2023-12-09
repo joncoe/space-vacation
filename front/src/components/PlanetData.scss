@@ -8,4 +8,9 @@ p {
 	padding: 0.5rem;
 	line-height: 2.5;
 	/* border: solid 2px red; */
+	> span {
+		background: green;
+		color: white;
+		padding: 0.2rem;
+	}
 }

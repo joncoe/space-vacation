@@ -14,11 +14,11 @@ function PlanetsData({ planetData, selectedPlanet }) {
 			<div className="info-bit">
 				<p>
 					It's distance from earth is{' '}
-					<span className="font-semibold">
+					<span className="font-bold">
 						{formatNumber(planetData.distanceFromEarthAU)}
 					</span>{' '}
 					astronomical units, or{' '}
-					<span className="font-semibold">
+					<span className="font-bold">
 						{formatNumber(planetData.distanceFromEarthKM)} KM
 					</span>
 				</p>
@@ -27,7 +27,7 @@ function PlanetsData({ planetData, selectedPlanet }) {
 			<div className="info-bit">
 				<p>
 					It's distance from the sun is{' '}
-					<span className="font-semibold">{formatNumber(planetData.au)}</span>
+					<span className="font-bold">{formatNumber(planetData.au)}</span>
 					&nbsp;
 					<a
 						href="https://en.wikipedia.org/wiki/Astronomical_unit#:~:text=The%20astronomical%20unit%20(symbol%3A%20au,)%20or%208.3%20light%2Dminutes"
@@ -41,8 +41,15 @@ function PlanetsData({ planetData, selectedPlanet }) {
 			</div>
 			<div className="info-bit">
 				<p>
+					At light speed, not so bad! It will take you{' '}
+					<span className="font-bold">{planetData.lightSpeedTime}</span> hours
+					to get there.
+				</p>
+			</div>
+			<div className="info-bit">
+				<p>
 					Traveling by rocket at the speed of the Voyager probes will take you{' '}
-					<span className="font-semibold">
+					<span className="font-bold">
 						{formatNumber(planetData.voyagerTime)}
 					</span>{' '}
 					years.
@@ -51,7 +58,7 @@ function PlanetsData({ planetData, selectedPlanet }) {
 			<div className="info-bit">
 				<p>
 					By car, the travel time would be about{' '}
-					<span className="font-semibold">
+					<span className="font-bold">
 						{formatNumber(planetData.drivingTime)}
 					</span>{' '}
 					years
@@ -60,7 +67,7 @@ function PlanetsData({ planetData, selectedPlanet }) {
 			<div className="info-bit">
 				<p>
 					And it will take you about{' '}
-					<span className="font-semibold">
+					<span className="font-bold">
 						{formatNumber(planetData.walkingTime)}
 					</span>{' '}
 					years to walk.
