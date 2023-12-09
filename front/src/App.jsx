@@ -105,7 +105,7 @@ function App() {
 						</button>
 					</form>
 				</div>
-				<div className=" p-3 bg-white w-1/4 font-mono text-sm">
+				<div className=" p-3 w-1/4 font-mono text-sm">
 					{selectedPlanet && (
 						<PlanetsData
 							planetData={planetData}

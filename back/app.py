@@ -69,13 +69,16 @@ def calculate_distance():
         log(selectedPlanet, "🪐")
         planet = PlanetList.objects(Planet=selectedPlanet).first()
         au = planet.SunDistanceAU
-        distanceFromEarth = abs(1 - au) * AU_IN_KM
-        drivingTime = round((distanceFromEarth / DRIVE_SPEED) / 24 / 365, 2)
-        voyagerTime = round((distanceFromEarth / VOYAGER_SPEED) / 24 / 365, 2)
-        walkingTime = round((distanceFromEarth / WALKING_SPEED) / 24 / 365, 2)
+        distanceFromEarthAU = abs(1 - au)
+        # * AU_IN_KM
+        distanceFromEarthKM = abs(1 - au) * AU_IN_KM
+        drivingTime = round((distanceFromEarthKM / DRIVE_SPEED) / 24 / 365, 2)
+        voyagerTime = round((distanceFromEarthKM / VOYAGER_SPEED) / 24 / 365, 2)
+        walkingTime = round((distanceFromEarthKM / WALKING_SPEED) / 24 / 365, 2)
 
         returnData = {
-            "distanceFromEarth": distanceFromEarth,
+            "distanceFromEarthAU": distanceFromEarthAU,
+            "distanceFromEarthKM": distanceFromEarthKM,
             "drivingTime": drivingTime,
             "voyagerTime": voyagerTime,
             "walkingTime": walkingTime,
