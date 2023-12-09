@@ -4,6 +4,7 @@ import './App.scss';
 import AboutUs from './pages/About';
 import Booking from './pages/Booking';
 import Login from './pages/Login';
+import Admin from './pages/Admin';
 
 function App() {
 	return (
@@ -14,6 +15,7 @@ function App() {
 					<Route path="/about" element={<AboutUs />} />
 					<Route path="/booking" element={<Booking />} />
 					<Route path="/login" element={<Login />} />
+					<Route path="/admin" element={<Admin />} />
 				</Routes>
 			</Router>
 		</>

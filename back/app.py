@@ -5,7 +5,7 @@ import asyncio
 from aiohttp import ClientSession
 from flask_cors import CORS, cross_origin
 
-from flask_mongoengine import MongoEngine
+from flask_mongoengine import MongoEngine, Document
 
 app = Flask(__name__)
 
@@ -51,15 +51,20 @@ class PlanetList(db.Document):
     }
 
 
+class Planet(Document):
+    Planet = db.StringField()
+    meta = {"collection": "PlanetDestinations", "allow_inheritance": False}
+
+
 @app.route("/api/list", methods=["GET"])
 def list_planets():
-    return list(PlanetList.objects)
+    return jsonify(list(PlanetList.objects))
 
 
 @app.route("/api/getNasaData", methods=["GET"])
 async def get_npod():
     try:
-        planets = list_planets()
+        planets = list(PlanetList.objects)
         async with ClientSession() as session:
             apod = await fetch_nasa_data(session)
             data = {"apod": apod, "planets": PlanetList.objects}
@@ -107,10 +112,12 @@ def processDistances(au):
 
 
 def log(msg, emoji):
+    print("\n")
     print(emoji * 10)
     print(msg)
     print(emoji * 10)
+    print("\n")
 
 
 if (__name__) == "__main__":
-    app.run(port=9030, debug=True)
+    app.run(port=5000, debug=True)
