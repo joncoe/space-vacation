@@ -18,7 +18,7 @@ function Navigation() {
 					<Link to="/login">Log in</Link>
 				</li>
 				<li>
-					<Link to="/login">Admin</Link>
+					<Link to="/admin">Admin</Link>
 				</li>
 			</ul>
 		</nav>

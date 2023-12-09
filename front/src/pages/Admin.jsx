@@ -4,9 +4,10 @@ import './Admin.scss';
 
 function Admin() {
 	const [planetList, setPlanetList] = useState([]);
+	const backgroundImage = '/images/control-room.jpg';
 	const { inputs, handleChange, clearForm, resetForm } = useForm({
 		planetName: '',
-		au: 0,
+		au: 0.01,
 	});
 	useEffect(() => {
 		const httpReq = {
@@ -94,18 +95,19 @@ function Admin() {
 			</div>
 			<div className="max-w-3xl m-auto">
 				<div className="flex justify-between">
-					<div className="w-5/12">
+					<div className="w-4/12">
 						<h3 className="mb-5">Planets currently in this system</h3>
 						<ul className="">
 							{planetList.map((planet, i) => (
 								<li className=" flex justify-between mb-3" key={planet + i}>
 									{planet.Planet}
 									<button
+										className={'delete'}
 										onClick={() => {
 											deletePlanet(planet.Planet);
 										}}
 									>
-										delete planet
+										[ delete ✖️ ]
 									</button>
 								</li>
 							))}
@@ -139,7 +141,6 @@ function Admin() {
 									name="au"
 									onChange={handleChange}
 									step="0.01"
-									min="0.01"
 									required
 								/>
 								<div className="label">
@@ -156,7 +157,7 @@ function Admin() {
 			</div>
 			<div
 				className="background-image"
-				// style={{ backgroundImage: '/images/mercury.jpg' }}
+				style={{ backgroundImage: `${backgroundImage}` }}
 			></div>
 		</>
 	);
