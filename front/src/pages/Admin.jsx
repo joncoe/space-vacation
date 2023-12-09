@@ -138,6 +138,8 @@ function Admin() {
 									value={inputs.au}
 									name="au"
 									onChange={handleChange}
+									step="0.01"
+									min="0.01"
 									required
 								/>
 								<div className="label">
