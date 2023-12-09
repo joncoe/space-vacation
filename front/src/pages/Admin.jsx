@@ -49,7 +49,7 @@ function Admin() {
 				await fetch('/api/deletePlanet', httpReq)
 					.then((response) => response.json())
 					.then((data) => {
-						// setPlanetList(data);
+						setPlanetList(data.planetList);
 					});
 			};
 			deletePlanet();
@@ -71,7 +71,7 @@ function Admin() {
 			await fetch('/api/addPlanet', httpReq)
 				.then((response) => response.json())
 				.then((data) => {
-					// setPlanetList(data);
+					setPlanetList(data.planetList);
 				});
 		};
 		addPlanet();

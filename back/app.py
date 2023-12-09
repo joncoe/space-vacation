@@ -59,7 +59,8 @@ class Planet(Document):
 
 @app.route("/api/list", methods=["GET"])
 def list_planets():
-    return jsonify(list(PlanetList.objects))
+    planets = sorted(list(PlanetList.objects), key=lambda x: x.SunDistanceAU)
+    return jsonify(planets)
 
 
 @app.route("/api/getNasaData", methods=["GET"])
@@ -108,8 +109,11 @@ def delete_planet():
     else:
         selectedPlanet.delete()
 
-    status_message = planetName + " has been deleted (ʘ‿ʘ)╯"
-    return jsonify({"status": status_message})
+    status_message = {
+        "planetList": sorted(list(PlanetList.objects), key=lambda x: x.SunDistanceAU),
+        "message": planetName + " has been deleted (ʘ‿ʘ)╯",
+    }
+    return jsonify(status_message)
 
 
 @app.route("/api/addPlanet", methods=["POST"])
@@ -121,9 +125,11 @@ def create_planet():
     planet = Planet(Planet=planetName, SunDistanceAU=au)
     # planet = Planet(Planet=planetName)
     planet.save()
-    print(planet.to_json())
-    return planet.to_json()
-    # return jsonify(data)
+    status_message = {
+        "planetList": sorted(list(PlanetList.objects), key=lambda x: x.SunDistanceAU),
+        "message": "success",
+    }
+    return jsonify(status_message)
 
 
 def processDistances(au):
