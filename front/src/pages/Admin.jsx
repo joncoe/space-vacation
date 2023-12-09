@@ -53,6 +53,7 @@ function Admin() {
 					});
 			};
 			deletePlanet();
+			resetForm();
 		}
 	};
 	const addNewPlanet = (planetData) => {
@@ -75,11 +76,11 @@ function Admin() {
 				});
 		};
 		addPlanet();
+		resetForm();
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log('submit', inputs);
 		addNewPlanet(inputs);
 	};
 
