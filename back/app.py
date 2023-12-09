@@ -33,6 +33,13 @@ async def fetch_nasa_data(session):
         return await response.json()
 
 
+async def fetch_planet_images(session, planetName):
+    url = f"https://images-api.nasa.gov/search?q={planetName}&media_type=image"
+    async with session.get(url) as response:
+        print(response)
+        # return await response.json()
+
+
 class PlanetList(db.Document):
     Planet = db.StringField()
     SunDistanceAU = db.FloatField()
@@ -62,30 +69,40 @@ async def get_npod():
 
 
 @app.route("/api/getDistance", methods=["POST"])
-def calculate_distance():
+async def calculate_distance():
     if request.method == "POST":
         data = request.get_json()
         selectedPlanet = data["selectedPlanet"]
         log(selectedPlanet, "🪐")
         planet = PlanetList.objects(Planet=selectedPlanet).first()
         au = planet.SunDistanceAU
-        distanceFromEarthAU = abs(1 - au)
-        # * AU_IN_KM
-        distanceFromEarthKM = abs(1 - au) * AU_IN_KM
-        drivingTime = round((distanceFromEarthKM / DRIVE_SPEED) / 24 / 365, 2)
-        voyagerTime = round((distanceFromEarthKM / VOYAGER_SPEED) / 24 / 365, 2)
-        walkingTime = round((distanceFromEarthKM / WALKING_SPEED) / 24 / 365, 2)
 
-        returnData = {
-            "distanceFromEarthAU": distanceFromEarthAU,
-            "distanceFromEarthKM": distanceFromEarthKM,
-            "drivingTime": drivingTime,
-            "voyagerTime": voyagerTime,
-            "walkingTime": walkingTime,
-            "au": au,
-        }
+        returnData = processDistances(au)
 
+        async with ClientSession() as session:
+            images = await fetch_planet_images(session, planetName=str(selectedPlanet))
+
+        print(images)
         return jsonify(returnData)
+
+
+def processDistances(au):
+    distanceFromEarthAU = abs(1 - au)
+    # * AU_IN_KM
+    distanceFromEarthKM = abs(1 - au) * AU_IN_KM
+    drivingTime = round((distanceFromEarthKM / DRIVE_SPEED) / 24 / 365, 2)
+    voyagerTime = round((distanceFromEarthKM / VOYAGER_SPEED) / 24 / 365, 2)
+    walkingTime = round((distanceFromEarthKM / WALKING_SPEED) / 24 / 365, 2)
+
+    returnData = {
+        "distanceFromEarthAU": distanceFromEarthAU,
+        "distanceFromEarthKM": distanceFromEarthKM,
+        "drivingTime": drivingTime,
+        "voyagerTime": voyagerTime,
+        "walkingTime": walkingTime,
+        "au": au,
+    }
+    return returnData
 
 
 def log(msg, emoji):
