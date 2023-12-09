@@ -48,7 +48,6 @@ function PageSelectPlanet() {
 
 		const fetchData = async () => {
 			await fetch('/api/getNasaData', httpReq)
-				// await fetch('http://127.0.0.1:9030/api/getNasaData', httpReq)
 				.then((response) => response.json())
 				.then((data) => {
 					setPanetList(data.planets);

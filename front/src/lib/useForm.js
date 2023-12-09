@@ -12,7 +12,6 @@ export default function useForm(initial = {}) {
 
 	function handleChange(e) {
 		let { name, type, value } = e.target;
-		console.log(name, value);
 		if (type === 'number') value = parseInt(value);
 		if (type === 'file') [value] = e.target.files;
 		setInputs({

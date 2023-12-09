@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react';
+import useForm from '../lib/useForm';
 import './Admin.scss';
 
 function Admin() {
 	const [planetList, setPlanetList] = useState([]);
+	const { inputs, handleChange, clearForm, resetForm } = useForm({
+		planetName: '',
+		au: 0,
+	});
 	useEffect(() => {
 		const httpReq = {
 			method: 'GET',
@@ -30,7 +35,6 @@ function Admin() {
 				'Are you sure? 💥 This cannot be undone. But you can add it back manually later'
 			)
 		) {
-			console.log(planetName);
 			const httpReq = {
 				method: 'POST',
 				headers: {
@@ -45,13 +49,16 @@ function Admin() {
 				await fetch('/api/deletePlanet', httpReq)
 					.then((response) => response.json())
 					.then((data) => {
-						console.log(data);
 						// setPlanetList(data);
 					});
 			};
 			deletePlanet();
-			console.log(planetName);
 		}
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		console.log('submit', inputs);
 	};
 
 	return (
@@ -61,20 +68,65 @@ function Admin() {
 			</div>
 			<div className="max-w-3xl m-auto">
 				<h2 className="mb-5">Administer your planetary system</h2>
-				<ul className="">
-					{planetList.map((planet, i) => (
-						<li className=" flex justify-between mb-3" key={planet + i}>
-							{planet.Planet}
-							<button
-								onClick={() => {
-									deletePlanet(planet.Planet);
-								}}
-							>
-								delete planet
+			</div>
+			<div className="max-w-3xl m-auto">
+				<div className="flex justify-between">
+					<div className="w-5/12">
+						<h3 className="mb-5">Planets currently in this system</h3>
+						<ul className="">
+							{planetList.map((planet, i) => (
+								<li className=" flex justify-between mb-3" key={planet + i}>
+									{planet.Planet}
+									<button
+										onClick={() => {
+											deletePlanet(planet.Planet);
+										}}
+									>
+										delete planet
+									</button>
+								</li>
+							))}
+						</ul>
+					</div>
+					<div className="w-1/3">
+						<h3 className="mb-5">Add a planet</h3>
+						<form onSubmit={handleSubmit}>
+							<label className="form-control w-full max-w-xs mb-5">
+								<div className="label">
+									<span className="label-text">Planet Name</span>
+								</div>
+								<input
+									type="text"
+									placeholder="e.g. Mercury, C-245"
+									className="input input-bordered w-full max-w-xs"
+									value={inputs.planetName}
+									name="planetName"
+									onChange={handleChange}
+								/>
+							</label>
+							<label className="form-control w-full max-w-xs">
+								<div className="label">
+									<span className="label-text">Distance from the sun</span>
+								</div>
+								<input
+									type="number"
+									placeholder="e.g. 2.7"
+									className="input input-bordered w-full max-w-xs"
+									value={inputs.au}
+									name="au"
+									onChange={handleChange}
+									required
+								/>
+								<div className="label">
+									<span className="label-text-alt">Use astronomical units</span>
+								</div>
+							</label>
+							<button type="submit" className="btn btn-primary mt-4">
+								Add this planet
 							</button>
-						</li>
-					))}
-				</ul>
+						</form>
+					</div>
+				</div>
 			</div>
 		</>
 	);
