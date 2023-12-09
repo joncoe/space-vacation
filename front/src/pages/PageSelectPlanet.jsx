@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import PlanetsData from './components/PlanetData';
-import useForm from './lib/useForm';
+import PlanetsData from '../components/PlanetData';
+import useForm from '../lib/useForm';
 import './PageSelectPlanet.scss';
 
 function PageSelectPlanet() {
