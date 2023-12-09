@@ -55,10 +55,32 @@ function Admin() {
 			deletePlanet();
 		}
 	};
+	const addNewPlanet = (planetData) => {
+		const { planetName, au } = planetData;
+		const httpReq = {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json; charset=UTF-8',
+				'Access-Control-Allow-Origin': '*',
+			},
+			body: JSON.stringify({ planetName, au }),
+		};
+
+		const addPlanet = async () => {
+			await fetch('/api/addPlanet', httpReq)
+				.then((response) => response.json())
+				.then((data) => {
+					// setPlanetList(data);
+				});
+		};
+		addPlanet();
+	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log('submit', inputs);
+		addNewPlanet(inputs);
 	};
 
 	return (
@@ -119,6 +141,7 @@ function Admin() {
 								/>
 								<div className="label">
 									<span className="label-text-alt">Use astronomical units</span>
+									<span className="label-text-alt">Cannot be zero</span>
 								</div>
 							</label>
 							<button type="submit" className="btn btn-primary mt-4">

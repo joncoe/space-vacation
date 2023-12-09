@@ -53,6 +53,7 @@ class PlanetList(db.Document):
 
 class Planet(Document):
     Planet = db.StringField()
+    SunDistanceAU = db.FloatField()
     meta = {"collection": "PlanetDestinations", "allow_inheritance": False}
 
 
@@ -109,6 +110,20 @@ def delete_planet():
 
     status_message = planetName + " has been deleted (ʘ‿ʘ)╯"
     return jsonify({"status": status_message})
+
+
+@app.route("/api/addPlanet", methods=["POST"])
+def create_planet():
+    data = request.get_json()
+    planetName = data["planetName"]
+    au = data["au"]
+
+    planet = Planet(Planet=planetName, SunDistanceAU=au)
+    # planet = Planet(Planet=planetName)
+    planet.save()
+    print(planet.to_json())
+    return planet.to_json()
+    # return jsonify(data)
 
 
 def processDistances(au):
