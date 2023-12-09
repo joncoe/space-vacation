@@ -85,7 +85,7 @@ async def calculate_distance():
         planet = PlanetList.objects(Planet=selectedPlanet).first()
         au = planet.SunDistanceAU
 
-        returnData = processDistances(au)
+        returnData = processDistances(au, selectedPlanet)
 
         # async with ClientSession() as session:
         #     images = await fetch_planet_images(session, planetName=str(selectedPlanet))
@@ -131,7 +131,7 @@ def create_planet():
     return jsonify(status_message)
 
 
-def processDistances(au):
+def processDistances(au, selectedPlanet):
     distanceFromEarthAU = abs(1 - au)
     # * AU_IN_KM
     distanceFromEarthKM = abs(1 - au) * AU_IN_KM
@@ -140,6 +140,7 @@ def processDistances(au):
     walkingTime = round((distanceFromEarthKM / WALKING_SPEED) / 24 / 365, 2)
 
     returnData = {
+        "selectedPlanet": selectedPlanet,
         "distanceFromEarthAU": distanceFromEarthAU,
         "distanceFromEarthKM": distanceFromEarthKM,
         "drivingTime": drivingTime,

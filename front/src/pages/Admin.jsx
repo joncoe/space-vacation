@@ -154,6 +154,10 @@ function Admin() {
 					</div>
 				</div>
 			</div>
+			<div
+				className="background-image"
+				// style={{ backgroundImage: '/images/mercury.jpg' }}
+			></div>
 		</>
 	);
 }

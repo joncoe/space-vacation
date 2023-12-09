@@ -8,6 +8,7 @@ function PageSelectPlanet() {
 		{ planet: 'none', distance: 0 },
 	]);
 	const [selectedPlanet, setSelectedPlanet] = useState(null);
+	const [backgroundImage, setBackgroundImage] = useState(null);
 	const [planetData, setPlanetData] = useState({});
 	const [astronomyImage, setAstronomyImage] = useState({});
 	const { inputs, handleChange, clearForm, resetForm } = useForm({
@@ -33,6 +34,7 @@ function PageSelectPlanet() {
 			.then((data) => {
 				console.log('returned data are', data);
 				setPlanetData(data);
+				setAstronomyImage('/images/' + data.selectedPlanet + '.jpg');
 			});
 	};
 
@@ -51,7 +53,7 @@ function PageSelectPlanet() {
 				.then((response) => response.json())
 				.then((data) => {
 					setPanetList(data.planets);
-					setAstronomyImage(data.apod[0]);
+					setAstronomyImage(data.apod[0].url);
 				});
 		};
 
@@ -117,7 +119,7 @@ function PageSelectPlanet() {
 			</div>
 			<div
 				className="background-image"
-				style={{ backgroundImage: `url(${astronomyImage.url})` }}
+				style={{ backgroundImage: `url(${astronomyImage})` }}
 			></div>
 		</>
 	);
