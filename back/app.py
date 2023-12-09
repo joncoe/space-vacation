@@ -80,10 +80,10 @@ async def calculate_distance():
 
         returnData = processDistances(au)
 
-        async with ClientSession() as session:
-            images = await fetch_planet_images(session, planetName=str(selectedPlanet))
+        # async with ClientSession() as session:
+        #     images = await fetch_planet_images(session, planetName=str(selectedPlanet))
 
-        print(images)
+        # print(images)
         return jsonify(returnData)
 
 
