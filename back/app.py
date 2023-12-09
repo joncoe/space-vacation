@@ -35,6 +35,7 @@ async def fetch_nasa_data(session):
 
 async def fetch_planet_images(session, planetName):
     url = f"https://images-api.nasa.gov/search?q={planetName}&media_type=image"
+    log(url, "👯🏼‍♂️")
     async with session.get(url) as response:
         print(response)
         # return await response.json()
