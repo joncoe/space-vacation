@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import PlanetsData from './components/PlanetData';
 import useForm from './lib/useForm';
 import './App.scss';
 
@@ -51,7 +52,7 @@ function App() {
 				.then((response) => response.json())
 				.then((data) => {
 					setPanetList(data.planets);
-					setAstronomyImage(data.apod);
+					setAstronomyImage(data.apod[0]);
 				});
 		};
 
@@ -60,9 +61,11 @@ function App() {
 
 	return (
 		<>
-			<h1 className="mb-5">Space Vacation</h1>
-			<div className="flex justify-around max-w-5xl m-auto">
-				<div className="form w-1/2">
+			<div className="max-w-5xl m-auto mt-10">
+				<h1 className="mb-5 inline-block bg-white p-3">Space Vacation</h1>
+			</div>
+			<div className="flex justify-between max-w-5xl m-auto">
+				<div className="form  p-3 bg-white">
 					<form onSubmit={handleSubmit}>
 						<div className="field">
 							<div>
@@ -102,7 +105,7 @@ function App() {
 						</button>
 					</form>
 				</div>
-				<div className="form w-1/2 font-mono text-sm">
+				<div className=" p-3 bg-white w-1/4 font-mono text-sm">
 					{selectedPlanet && (
 						<PlanetsData
 							planetData={planetData}
@@ -111,39 +114,10 @@ function App() {
 					)}
 				</div>
 			</div>
-		</>
-	);
-}
-
-function PlanetsData({ planetData, selectedPlanet }) {
-	return (
-		<>
-			<p>Amazing! You will travel to {selectedPlanet}!</p>
-			<p>
-				It's distance from the sun is{' '}
-				<span className="font-semibold">{planetData.au}</span>&nbsp;
-				<a
-					href="https://en.wikipedia.org/wiki/Astronomical_unit#:~:text=The%20astronomical%20unit%20(symbol%3A%20au,)%20or%208.3%20light%2Dminutes"
-					target="_blank"
-					rel="noreferrer"
-				>
-					astronomical units
-				</a>
-				!
-			</p>
-			<p>
-				Traveling by rocket at the speed of the Voyager probes will take you{' '}
-				<span className="font-semibold">{planetData.voyagerTime}</span> years.
-			</p>
-			<p>
-				By car, the travel time would be about{' '}
-				<span className="font-semibold">{planetData.drivingTime}</span> years
-			</p>
-			<p>
-				And it will take you about{' '}
-				<span className="font-semibold">{planetData.walkingTime}</span> years to
-				walk.
-			</p>
+			<div
+				className="background-image"
+				style={{ backgroundImage: `url(${astronomyImage.url})` }}
+			></div>
 		</>
 	);
 }
