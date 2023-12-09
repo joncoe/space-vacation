@@ -31,6 +31,26 @@ function Admin() {
 			)
 		) {
 			console.log(planetName);
+			const httpReq = {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json; charset=UTF-8',
+					'Access-Control-Allow-Origin': '*',
+				},
+				body: JSON.stringify({ planetName: planetName }),
+			};
+
+			const deletePlanet = async () => {
+				await fetch('/api/deletePlanet', httpReq)
+					.then((response) => response.json())
+					.then((data) => {
+						console.log(data);
+						// setPlanetList(data);
+					});
+			};
+			deletePlanet();
+			console.log(planetName);
 		}
 	};
 
@@ -39,15 +59,15 @@ function Admin() {
 			<div className="max-w-5xl m-auto mt-10">
 				<h1 className="mb-5 inline-block bg-white p-3">Planet Admin</h1>
 			</div>
-			<div className="max-w-5xl m-auto">
+			<div className="max-w-3xl m-auto">
 				<h2 className="mb-5">Administer your planetary system</h2>
-				<ul className="w-1/2">
+				<ul className="">
 					{planetList.map((planet, i) => (
 						<li className=" flex justify-between mb-3" key={planet + i}>
 							{planet.Planet}
 							<button
 								onClick={() => {
-									deletePlanet(planet);
+									deletePlanet(planet.Planet);
 								}}
 							>
 								delete planet

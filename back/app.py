@@ -92,6 +92,25 @@ async def calculate_distance():
         return jsonify(returnData)
 
 
+@app.route("/api/deletePlanet", methods=["POST"])
+def delete_planet():
+    data = request.get_json()
+
+    planetName = data["planetName"]
+
+    planets = PlanetList.objects(Planet=planetName)
+
+    selectedPlanet = planets.first()
+
+    if not selectedPlanet:
+        return jsonify({"error": "data not found"})
+    else:
+        selectedPlanet.delete()
+
+    status_message = planetName + " has been deleted (ʘ‿ʘ)╯"
+    return jsonify({"status": status_message})
+
+
 def processDistances(au):
     distanceFromEarthAU = abs(1 - au)
     # * AU_IN_KM
