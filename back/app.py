@@ -123,7 +123,6 @@ def create_planet():
     au = data["au"]
 
     planet = Planet(Planet=planetName, SunDistanceAU=au)
-    # planet = Planet(Planet=planetName)
     planet.save()
     status_message = {
         "planetList": sorted(list(PlanetList.objects), key=lambda x: x.SunDistanceAU),
