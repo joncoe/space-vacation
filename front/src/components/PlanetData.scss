@@ -14,3 +14,19 @@ p {
 		padding: 0.2rem;
 	}
 }
+
+#info-container {
+	overflow-y: hidden;
+}
+
+a.page-link {
+	color: blue;
+	text-decoration: dashed;
+}
+
+.planet-name {
+	/* background-color: white; */
+	font-size: 2rem;
+	font-weight: 800;
+	line-height: 1.2;
+}

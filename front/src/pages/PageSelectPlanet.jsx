@@ -65,10 +65,13 @@ function PageSelectPlanet() {
 			<div className="max-w-5xl m-auto mt-10">
 				<h1 className="mb-5 inline-block bg-white p-3">Space Vacation</h1>
 			</div>
-			<div className="flex justify-between max-w-5xl m-auto">
+			<div className="lg:flex justify-between max-w-5xl m-auto">
 				<div className="form">
-					<div className="  p-3 bg-white">
-						<form onSubmit={handleSubmit}>
+					<div className=" flex">
+						<form
+							onSubmit={handleSubmit}
+							className="flex md:block bg-white p-3 "
+						>
 							<div className="field">
 								<div>
 									<label htmlFor="selectedPlanet">Choose a planet</label>
@@ -108,7 +111,7 @@ function PageSelectPlanet() {
 						</form>
 					</div>
 				</div>
-				<div className=" p-3 w-1/2 font-mono text-sm">
+				<div className="lg:w-1/2  text-sm">
 					{selectedPlanet && (
 						<PlanetsData
 							planetData={planetData}

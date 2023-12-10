@@ -6,6 +6,11 @@ nav {
 			background-color: yellow;
 			padding: 0.3rem 1rem;
 			font-size: 14px;
+			@media screen and (max-width: 500px) {
+				font-size: 12px;
+				padding: 0.1rem 0.5rem;
+				margin: 0.5rem;
+			}
 		}
 	}
 }
