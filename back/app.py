@@ -4,10 +4,22 @@ import requests
 import asyncio
 from aiohttp import ClientSession
 from flask_cors import CORS, cross_origin
+from datetime import datetime, timedelta, timezone
+from flask_jwt_extended import (
+    create_access_token,
+    get_jwt,
+    get_jwt_identity,
+    unset_jwt_cookies,
+    jwt_required,
+    JWTManager,
+)
 
 from flask_mongoengine import MongoEngine, Document
 
 app = Flask(__name__)
+
+app.config["JWT_SECRET_KEY"] = "12345678"
+jwt = JWTManager(app)
 
 NASA_API_URL = "https://api.nasa.gov/planetary/apod"
 NASA_API_KEY = "0UwQK04XRXD7U435LgFrOCH5gl826pclax1I87Gy"
@@ -28,7 +40,7 @@ db.init_app(app)
 
 async def fetch_nasa_data(session):
     url = f"{NASA_API_URL}?api_key={NASA_API_KEY}&count=1"
-    print("🔭 nasa url" + url)
+    # print("🔭 nasa url" + url)
     async with session.get(url) as response:
         # return await response.json()
         return await response.json()
@@ -130,6 +142,18 @@ def create_planet():
         "message": "success",
     }
     return jsonify(status_message)
+
+
+@app.route("/token", methods=["POST"])
+def create_token():
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+    if email != "test" or password != "test":
+        return {"msg": "Wrong email or password"}, 401
+
+    access_token = create_access_token(identity=email)
+    response = {"access_token": access_token}
+    return response
 
 
 def processDistances(au, selectedPlanet):
