@@ -35,11 +35,11 @@ function Login({ setToken }) {
 
 	return (
 		<>
-			<div className="max-w-5xl m-auto mt-10">
+			<div className="max-w-xl m-auto mt-10">
 				<h1 className="mb-5 inline-block bg-white p-3">Login</h1>
 			</div>
-			<div className="max-w-5xl m-auto mt-10">
-				<form onSubmit={handleSubmit} className="bg-white">
+			<div className="max-w-xl m-auto mt-10">
+				<form onSubmit={handleSubmit} className="bg-white  p-3">
 					<label className="form-control w-full max-w-xs mb-5">
 						<div className="label">
 							<span className="label-text">Email address</span>
