@@ -1,6 +1,8 @@
 import useForm from '../lib/useForm';
+import { useNavigate } from 'react-router-dom';
 import './Login.scss';
 function Login({ setToken }) {
+	const navigate = useNavigate();
 	const { inputs, handleChange, clearForm, resetForm } = useForm({
 		email: '',
 		password: '',
@@ -25,6 +27,7 @@ function Login({ setToken }) {
 				.then((data) => {
 					const { access_token } = data;
 					setToken(access_token);
+					navigate('/admin');
 				});
 		};
 		logInUser();

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import PlanetsData from '../components/PlanetData';
 import useForm from '../lib/useForm';
+import classNames from 'classnames';
 import './PageSelectPlanet.scss';
 
 function PageSelectPlanet() {
@@ -8,8 +9,8 @@ function PageSelectPlanet() {
 		{ planet: 'none', distance: 0 },
 	]);
 	const [selectedPlanet, setSelectedPlanet] = useState(null);
-	const [backgroundImage, setBackgroundImage] = useState(null);
 	const [planetData, setPlanetData] = useState({});
+	const [showImage, setShowImage] = useState('');
 	const [astronomyImage, setAstronomyImage] = useState({});
 	const { inputs, handleChange, clearForm, resetForm } = useForm({
 		selectedPlanet: '',
@@ -32,7 +33,6 @@ function PageSelectPlanet() {
 		await fetch('/api/getDistance', httpReq)
 			.then((response) => response.json())
 			.then((data) => {
-				console.log('returned data are', data);
 				setPlanetData(data);
 				setAstronomyImage('/images/' + data.selectedPlanet + '.jpg');
 			});
@@ -53,31 +53,45 @@ function PageSelectPlanet() {
 				.then((response) => response.json())
 				.then((data) => {
 					setPanetList(data.planets);
-					setAstronomyImage(data.apod[0].url);
+					setAstronomyImage(data.apod[0]);
 				});
 		};
 
 		fetchData();
 	}, []);
 
+	let photoViewerClass = classNames('image-info-container', {
+		showViewer: showImage,
+	});
+
+	const showImageInfo = () => {
+		setShowImage(true);
+	};
+
+	const hideImageInfo = () => {
+		setShowImage(false);
+	};
+
 	return (
 		<>
 			<div className="max-w-5xl m-auto mt-10">
-				<h1 className="mb-5 inline-block bg-white p-3">Space Vacation</h1>
+				<h1 className="mb-5 inline-block bg-white p-3  ml-4 md:ml-0">
+					Space Vacation
+				</h1>
 			</div>
 			<div className="lg:flex justify-between max-w-5xl m-auto">
 				<div className="form">
 					<div className=" flex">
 						<form
 							onSubmit={handleSubmit}
-							className="flex md:block bg-white p-3 "
+							className="flex md:block bg-white p-3 ml-4 md:ml-0"
 						>
-							<div className="field">
+							<div className="field mr-3 md:mr-0">
 								<div>
 									<label htmlFor="selectedPlanet">Choose a planet</label>
 								</div>
 
-								<label className="form-control w-full max-w-xs mb-5">
+								<label className="form-control w-full max-w-xs md:mb-5">
 									<div className="label">
 										<span className="label-text">
 											Where do you want to boldly go?
@@ -120,9 +134,25 @@ function PageSelectPlanet() {
 					)}
 				</div>
 			</div>
+			<div className="photo-info">
+				<button onClick={showImageInfo}>🔭 about this image</button>
+			</div>
+			<div className={photoViewerClass}>
+				<div className="image-info">
+					<div>
+						<h4>{astronomyImage.title}</h4>
+						<p>Date: {astronomyImage.date}</p>
+						<p className="overflow-wrap">URL: {astronomyImage.url}</p>
+						<p>{astronomyImage.explanation}</p>
+					</div>
+					<button onClick={hideImageInfo} className="close-button">
+						[close]
+					</button>
+				</div>
+			</div>
 			<div
 				className="background-image"
-				style={{ backgroundImage: `url(${astronomyImage})` }}
+				style={{ backgroundImage: `url(${astronomyImage.url})` }}
 			></div>
 		</>
 	);

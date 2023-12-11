@@ -3,6 +3,63 @@
 	background-color: yellow;
 }
 
+.photo-info {
+	background-color: white;
+	display: inline-block;
+	font-size: 12px;
+	padding: 0.3rem 0.6rem;
+	bottom: 30px;
+	position: fixed;
+}
+
+.image-info-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	visibility: hidden;
+}
+.image-info {
+	position: relative;
+	width: 100%;
+	max-width: 40rem;
+	background: white;
+	margin: 2rem;
+	padding: 2rem;
+	box-shadow: 0px 0px 60px -6px rgba(0, 0, 0, 0.75);
+	@media screen and (max-width: 720px) {
+		max-height: 480px;
+		overflow-x: scroll;
+	}
+	p {
+		background-color: transparent;
+		padding: 0;
+		line-height: 1.4;
+		font-size: 14px;
+		display: block;
+	}
+}
+
+.overflow-wrap {
+	overflow-wrap: anywhere;
+}
+
+.close-button {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	font-size: 12px;
+	background-color: aqua;
+}
+
+.showViewer {
+	visibility: visible;
+}
+
 li {
 	margin-bottom: 0.5rem;
 }
