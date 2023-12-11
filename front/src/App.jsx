@@ -16,7 +16,7 @@ function App() {
 	const { token, removeToken, setToken } = useToken();
 	return (
 		<>
-			<Navigation token={removeToken} />
+			<Navigation authToken={token} removeToken={removeToken} />
 			<Routes>
 				<Route path="/" element={<PageSelectPlanet />} />
 				<Route path="/about" element={<AboutUs />} />

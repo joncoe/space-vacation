@@ -7,7 +7,7 @@ function Admin({ authToken }) {
 	const backgroundImage = '/images/control-room.jpg';
 	const { inputs, handleChange, clearForm, resetForm } = useForm({
 		planetName: '',
-		au: 0.01,
+		au: '',
 	});
 	useEffect(() => {
 		const httpReq = {
