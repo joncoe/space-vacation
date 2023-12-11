@@ -18,7 +18,8 @@ from flask_mongoengine import MongoEngine, Document
 
 app = Flask(__name__)
 
-app.config["JWT_SECRET_KEY"] = "12345678"
+app.config["JWT_SECRET_KEY"] = "pvEcVUmAS3xLckxI"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 jwt = JWTManager(app)
 
 NASA_API_URL = "https://api.nasa.gov/planetary/apod"
@@ -108,6 +109,7 @@ async def calculate_distance():
 
 
 @app.route("/api/deletePlanet", methods=["POST"])
+@jwt_required()
 def delete_planet():
     data = request.get_json()
 
@@ -130,6 +132,7 @@ def delete_planet():
 
 
 @app.route("/api/addPlanet", methods=["POST"])
+@jwt_required()
 def create_planet():
     data = request.get_json()
     planetName = data["planetName"]
@@ -142,6 +145,24 @@ def create_planet():
         "message": "success",
     }
     return jsonify(status_message)
+
+
+@app.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            data = response.get_json()
+            if type(data) is dict:
+                data["access_token"] = access_token
+                response.data = json.dumps(data)
+        return response
+    except (RuntimeError, KeyError):
+        # Case where there is not a valid JWT. Just return the original respone
+        return response
 
 
 @app.route("/api/token", methods=["POST"])
