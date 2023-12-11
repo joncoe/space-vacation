@@ -2,19 +2,19 @@ import { useState } from 'react';
 
 function useToken() {
 	function getToken() {
-		const userToken = localStorage.getItem('token');
+		const userToken = localStorage.getItem('spacePortalToken');
 		return userToken && userToken;
 	}
 
 	const [token, setToken] = useState(getToken());
 
 	function saveToken(userToken) {
-		localStorage.setItem('token', userToken);
+		localStorage.setItem('spacePortalToken', userToken);
 		setToken(userToken);
 	}
 
 	function removeToken() {
-		localStorage.removeItem('token');
+		localStorage.removeItem('spacePortalToken');
 		setToken(null);
 	}
 
