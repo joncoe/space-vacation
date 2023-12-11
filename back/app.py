@@ -144,7 +144,7 @@ def create_planet():
     return jsonify(status_message)
 
 
-@app.route("/token", methods=["POST"])
+@app.route("/api/token", methods=["POST"])
 def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
@@ -153,6 +153,13 @@ def create_token():
 
     access_token = create_access_token(identity=email)
     response = {"access_token": access_token}
+    return response
+
+
+@app.route("/api/logout", methods=["POST"])
+def logout():
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
     return response
 
 
