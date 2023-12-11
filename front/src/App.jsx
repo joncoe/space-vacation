@@ -23,7 +23,7 @@ function App() {
 				<Route path="/booking" element={<Booking />} />
 				<Route path="/login" element={<Login setToken={setToken} />} />
 				<Route element={<PrivateRoutes />}>
-					<Route path="/admin" element={<Admin token={token} />} />
+					<Route path="/admin" element={<Admin authToken={token} />} />
 				</Route>
 				<Route path="/privacy" element={<Privacy />} />
 				<Route path="*" element={<LostInSpace />} />

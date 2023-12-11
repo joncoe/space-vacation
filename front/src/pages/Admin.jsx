@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import useForm from '../lib/useForm';
 import './Admin.scss';
 
-function Admin() {
+function Admin({ authToken }) {
 	const [planetList, setPlanetList] = useState([]);
 	const backgroundImage = '/images/control-room.jpg';
 	const { inputs, handleChange, clearForm, resetForm } = useForm({
@@ -16,6 +16,7 @@ function Admin() {
 				Accept: 'application/json',
 				'Content-Type': 'application/json; charset=UTF-8',
 				'Access-Control-Allow-Origin': '*',
+				Authorization: 'Bearer ' + authToken,
 			},
 		};
 
@@ -42,6 +43,7 @@ function Admin() {
 					Accept: 'application/json',
 					'Content-Type': 'application/json; charset=UTF-8',
 					'Access-Control-Allow-Origin': '*',
+					Authorization: 'Bearer ' + authToken,
 				},
 				body: JSON.stringify({ planetName: planetName }),
 			};
@@ -65,6 +67,7 @@ function Admin() {
 				Accept: 'application/json',
 				'Content-Type': 'application/json; charset=UTF-8',
 				'Access-Control-Allow-Origin': '*',
+				Authorization: 'Bearer ' + authToken,
 			},
 			body: JSON.stringify({ planetName, au }),
 		};
