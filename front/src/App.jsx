@@ -16,14 +16,14 @@ function App() {
 	const { token, removeToken, setToken } = useToken();
 	return (
 		<>
-			<Navigation />
+			<Navigation token={removeToken} />
 			<Routes>
 				<Route path="/" element={<PageSelectPlanet />} />
 				<Route path="/about" element={<AboutUs />} />
 				<Route path="/booking" element={<Booking />} />
 				<Route path="/login" element={<Login setToken={setToken} />} />
 				<Route element={<PrivateRoutes />}>
-					<Route path="/admin" element={<Admin />} />
+					<Route path="/admin" element={<Admin token={token} />} />
 				</Route>
 				<Route path="/privacy" element={<Privacy />} />
 				<Route path="*" element={<LostInSpace />} />

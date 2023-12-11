@@ -1,24 +1,24 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './Navigation.scss';
 
-function Navigation() {
+function Navigation({ token }) {
 	return (
 		<nav>
 			<ul>
 				<li>
-					<Link to="/">Home</Link>
+					<NavLink to="/">Home</NavLink>
 				</li>
 				<li>
-					<Link to="/about">About</Link>
+					<NavLink to="/about">About</NavLink>
 				</li>
 				<li>
-					<Link to="/booking">Book a trip</Link>
+					<NavLink to="/booking">Book a trip</NavLink>
 				</li>
 				<li>
-					<Link to="/login">Log in</Link>
+					<NavLink to="/login">Log in</NavLink>
 				</li>
 				<li>
-					<Link to="/admin">Admin</Link>
+					<NavLink to="/admin">Admin</NavLink>
 				</li>
 			</ul>
 		</nav>
