@@ -1,6 +1,6 @@
 import useForm from '../lib/useForm';
 import { useNavigate } from 'react-router-dom';
-import './Login.scss';
+
 function Login({ setToken }) {
 	const navigate = useNavigate();
 	const { inputs, handleChange, clearForm, resetForm } = useForm({
@@ -67,7 +67,10 @@ function Login({ setToken }) {
 							required
 						/>
 					</label>
-					<button type="submit" className="btn btn-primary mt-4">
+					<button
+						type="submit"
+						className={`btn btn-primary mt-4 ${styles['log-in']}`}
+					>
 						Log in
 					</button>
 				</form>

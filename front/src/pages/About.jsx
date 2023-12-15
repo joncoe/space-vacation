@@ -1,4 +1,5 @@
-import './About.scss';
+import BackgroundImage from '../components/BackgroundImage';
+
 function AboutUs() {
 	return (
 		<>
@@ -12,7 +13,7 @@ function AboutUs() {
 					Solar System that we currently service.
 				</div>
 			</div>
-			<div className="background-image bg-image-about"></div>
+			<BackgroundImage image={'/images/shuttle.jpg'} />
 		</>
 	);
 }

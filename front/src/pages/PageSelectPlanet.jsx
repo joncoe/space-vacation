@@ -36,6 +36,9 @@ function PageSelectPlanet() {
 			.then((data) => {
 				setPlanetData(data);
 				setBackgroundImage('/images/' + data.selectedPlanet + '.jpg');
+			})
+			.catch((e) => {
+				throw new Error(e);
 			});
 	};
 

@@ -1,4 +1,5 @@
-import './Booking.scss';
+import BackgroundImage from '../components/BackgroundImage';
+
 function Booking() {
 	return (
 		<>
@@ -38,7 +39,7 @@ function Booking() {
 					</div>
 				</div>
 			</div>
-			<div className="background-image bg-image-book"></div>
+			<BackgroundImage image={'/images/artemis.jpg'} />
 		</>
 	);
 }

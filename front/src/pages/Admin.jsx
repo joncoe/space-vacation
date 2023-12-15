@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import useForm from '../lib/useForm';
-import './Admin.scss';
+import styles from './Admin.module.scss';
 
 function Admin({ authToken }) {
 	const [planetList, setPlanetList] = useState([]);
@@ -105,7 +105,7 @@ function Admin({ authToken }) {
 								<li className=" flex justify-between mb-3" key={planet + i}>
 									{planet.Planet}
 									<button
-										className={'delete'}
+										className={styles.delete}
 										onClick={() => {
 											deletePlanet(planet.Planet);
 										}}
