@@ -16,11 +16,11 @@ from flask_jwt_extended import (
 
 from flask_mongoengine import MongoEngine, Document
 
-app = Flask(__name__)
+api = Flask(__name__)
 
-app.config["JWT_SECRET_KEY"] = "pvEcVUmAS3xLckxI"
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
-jwt = JWTManager(app)
+api.config["JWT_SECRET_KEY"] = "pvEcVUmAS3xLckxI"
+api.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+jwt = JWTManager(api)
 
 NASA_API_URL = "https://api.nasa.gov/planetary/apod"
 NASA_API_KEY = "0UwQK04XRXD7U435LgFrOCH5gl826pclax1I87Gy"
@@ -30,13 +30,13 @@ DRIVE_SPEED = 120
 WALKING_SPEED = 5
 LIGHT_SPEED = 1080000000  # km/h
 
-app.config["MONGODB_SETTINGS"] = {
+api.config["MONGODB_SETTINGS"] = {
     "db": "SpaceVacation",
     "host": "127.0.0.1",
     "port": 27017,
 }
 db = MongoEngine()
-db.init_app(app)
+db.init_app(api)
 
 
 async def fetch_nasa_data(session):
@@ -71,13 +71,13 @@ class Planet(Document):
     meta = {"collection": "PlanetDestinations", "allow_inheritance": False}
 
 
-@app.route("/api/list", methods=["GET"])
+@api.route("/api/list", methods=["GET"])
 def list_planets():
     planets = sorted(list(PlanetList.objects), key=lambda x: x.SunDistanceAU)
     return jsonify(planets)
 
 
-@app.route("/api/getNasaData", methods=["GET"])
+@api.route("/api/getNasaData", methods=["GET"])
 async def get_npod():
     try:
         planets = sorted(list(PlanetList.objects), key=lambda x: x.SunDistanceAU)
@@ -90,7 +90,7 @@ async def get_npod():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("/api/getDistance", methods=["POST"])
+@api.route("/api/getDistance", methods=["POST"])
 async def calculate_distance():
     if request.method == "POST":
         data = request.get_json()
@@ -108,7 +108,7 @@ async def calculate_distance():
         return jsonify(returnData)
 
 
-@app.route("/api/deletePlanet", methods=["POST"])
+@api.route("/api/deletePlanet", methods=["POST"])
 @jwt_required()
 def delete_planet():
     data = request.get_json()
@@ -131,7 +131,7 @@ def delete_planet():
     return jsonify(status_message)
 
 
-@app.route("/api/addPlanet", methods=["POST"])
+@api.route("/api/addPlanet", methods=["POST"])
 @jwt_required()
 def create_planet():
     data = request.get_json()
@@ -147,7 +147,7 @@ def create_planet():
     return jsonify(status_message)
 
 
-@app.after_request
+@api.after_request
 def refresh_expiring_jwts(response):
     try:
         exp_timestamp = get_jwt()["exp"]
@@ -165,7 +165,7 @@ def refresh_expiring_jwts(response):
         return response
 
 
-@app.route("/api/token", methods=["POST"])
+@api.route("/api/token", methods=["POST"])
 def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
@@ -177,7 +177,7 @@ def create_token():
     return response
 
 
-@app.route("/api/logout", methods=["POST"])
+@api.route("/api/logout", methods=["POST"])
 def logout():
     response = jsonify({"msg": "logout successful"})
     unset_jwt_cookies(response)
@@ -215,4 +215,4 @@ def log(msg, emoji):
 
 
 if (__name__) == "__main__":
-    app.run(port=5000, debug=True)
+    api.run(port=5000, debug=True)
