@@ -3,3 +3,4 @@ back/venv
 */node_modules
 node_modules
 front/dist/
+__pycache__

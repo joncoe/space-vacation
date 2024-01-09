@@ -1,8 +1,6 @@
 from flask import Flask, jsonify, request
 import json
 import requests
-import asyncio
-from aiohttp import ClientSession
 from flask_cors import CORS, cross_origin
 from datetime import datetime, timedelta, timezone
 from flask_jwt_extended import (
@@ -13,6 +11,7 @@ from flask_jwt_extended import (
     jwt_required,
     JWTManager,
 )
+from utils import log
 
 from flask_mongoengine import MongoEngine, Document
 
@@ -41,18 +40,8 @@ db.init_app(api)
 
 async def fetch_nasa_data(session):
     url = f"{NASA_API_URL}?api_key={NASA_API_KEY}&count=1"
-    # print("🔭 nasa url" + url)
     async with session.get(url) as response:
-        # return await response.json()
         return await response.json()
-
-
-async def fetch_planet_images(session, planetName):
-    url = f"https://images-api.nasa.gov/search?q={planetName}&media_type=image"
-    log(url, "👯🏼‍♂️")
-    async with session.get(url) as response:
-        print(response)
-        # return await response.json()
 
 
 class PlanetList(db.Document):
@@ -100,11 +89,6 @@ async def calculate_distance():
         au = planet.SunDistanceAU
 
         returnData = processDistances(au, selectedPlanet)
-
-        # async with ClientSession() as session:
-        #     images = await fetch_planet_images(session, planetName=str(selectedPlanet))
-
-        # print(images)
         return jsonify(returnData)
 
 
@@ -204,14 +188,6 @@ def processDistances(au, selectedPlanet):
         "au": au,
     }
     return returnData
-
-
-def log(msg, emoji):
-    print("\n")
-    print(emoji * 10)
-    print(msg)
-    print(emoji * 10)
-    print("\n")
 
 
 if (__name__) == "__main__":
